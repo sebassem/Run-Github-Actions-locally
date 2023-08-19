@@ -13,6 +13,7 @@ permissions:
 
 env:
   LOCATION: "eastus"
+  RESOURCE_GROUP: "bicep-rg"
 
 jobs:
   Lint-and-preview:
@@ -46,4 +47,5 @@ jobs:
             az deployment group what-if \
               --name whatif-${{ github.run_id }} \
               --template-file src/main.bicep \
+              --resource-group $RESOURCE_GROUP \
               --location $LOCATION > whatif
