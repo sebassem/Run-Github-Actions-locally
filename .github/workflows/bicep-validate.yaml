@@ -47,4 +47,5 @@ jobs:
             az deployment group what-if \
               --name whatif-${{ github.run_id }} \
               --template-file src/main.bicep \
-              --resource-group $RESOURCE_GROUP > whatif
+              --resource-group $RESOURCE_GROUP \
+              --result-format ResourceIdOnly > whatif
