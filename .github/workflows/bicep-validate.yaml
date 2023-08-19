@@ -36,7 +36,7 @@ jobs:
       - name: Bicep Lint
         uses: Azure/cli@v1
         with:
-          inlineScript: az bicep build --file src\main.bicep
+          inlineScript: az bicep build --file src/main.bicep
 
       # Preview changes
       - name: "What-If"
@@ -45,5 +45,5 @@ jobs:
           inlineScript: |
             az deployment group what-if \
               --name whatif-${{ github.run_id }} \
-              --template-file src\main.bicep \
+              --template-file src/main.bicep \
               --location $LOCATION > whatif
