@@ -45,5 +45,5 @@ jobs:
           inlineScript: |
             az deployment group what-if \
               --name whatif-${{ github.run_id }} \
-              --template-file main.bicep \
+              --template-file src\main.bicep \
               --location $LOCATION > whatif
