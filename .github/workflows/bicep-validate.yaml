@@ -48,4 +48,4 @@ jobs:
               --name whatif-${{ github.run_id }} \
               --template-file src/main.bicep \
               --resource-group $RESOURCE_GROUP \
-              --result-format ResourceIdOnly > whatif
+              --result-format ResourceIdOnly
