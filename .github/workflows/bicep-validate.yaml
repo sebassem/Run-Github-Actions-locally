@@ -25,6 +25,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Azure Version
+        run: az --version
+
       # Authenticate to Az CLI using OIDC
       - name: "Az CLI login"
         uses: azure/login@v1
