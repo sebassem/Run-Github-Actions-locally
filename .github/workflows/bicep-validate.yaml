@@ -8,7 +8,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   pull-requests: write
 
 env:
@@ -21,34 +21,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Azure Version
-        run: az --version
+      - name: Manually install Azure CLI
+        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-      # Authenticate to Az CLI using OIDC
       - name: "Az CLI login"
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
-        # Checks that all Bicep configuration files adhere to a canonical format
       - name: Bicep Lint
-        uses: Azure/cli@v1
-        with:
-          inlineScript: az bicep build --file src/main.bicep
+        run: az bicep build --file src/main.bicep
 
-      # Preview changes
       - name: "What-If"
-        uses: Azure/cli@v1
-        with:
-          inlineScript: |
-            az deployment group what-if \
+        run:  az deployment group what-if \
               --name whatif-${{ github.run_id }} \
               --template-file src/main.bicep \
-              --resource-group $RESOURCE_GROUP \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
               --result-format ResourceIdOnly
